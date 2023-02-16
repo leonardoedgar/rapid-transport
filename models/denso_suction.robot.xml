@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Robot name="ur3e_robotiq_140_gripper">
+
+  <!-- Include the robot -->
+  <Robot file="denso_vs060.dae"/>
+
+  <!-- Include the coupling -->
+  <Kinbody>
+    <body name="robotiq_coupling">
+      <Geom type="trimesh" modifiable="true">
+        <diffuseColor>0.2 0.2 0.2</diffuseColor>
+        <render>meshes/robotiq_85_coupler.stl 1</render>
+        <collision>meshes/robotiq_85_coupler.stl 1</collision>
+      </Geom>
+      <mass type="custom">
+        <total>0.168</total>
+      </mass>
+    </body>
+  </Kinbody>
+
+  <!-- Attach the coupling to the robot end-effector -->
+  <Kinbody>
+    <body name="robotiq_coupling">
+      <offsetfrom>link6</offsetfrom>
+      <translation>0 0 0.005</translation>
+    </body>
+    <joint name="joint_ur3e_robotiq_coupling" type="hinge" enable="false">
+      <body>link6</body>
+      <body>robotiq_coupling</body>
+      <limits>0 0</limits>
+    </joint>
+  </Kinbody>
+
+  <!-- Attach the suction head to the coupling -->
+  <Kinbody>
+    <body name='suction_cup_holder' type="dynamic">
+      <geom type="trimesh" modifiable="true">
+        <diffuseColor> 0.69019608  0.76862745  0.87058824</diffuseColor>
+        <render>meshes/suction_cup/epick.stl 0.001</render>
+        <collision>meshes/suction_cup/epick.stl 0.001</collision>
+      </geom>
+      <offsetfrom>robotiq_coupling</offsetfrom>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <rotationaxis>0 0 1 90</rotationaxis>
+      <translation>0 0 0.0987</translation>
+    </body>
+    <joint name="joint_suction_cup_holder" type="hinge" enable="false">
+      <body>robotiq_coupling</body>
+      <body>suction_cup_holder</body>
+      <limits>0 0</limits>
+    </joint>
+
+    <body name="suction_head" type="dynamic">
+      <geom type="trimesh" modifiable="true">
+        <diffuseColor> 0.43921569  0.50196078  0.56470588 </diffuseColor>
+        <render>meshes/suction_cup/epick_suction_head.stl 1</render>
+        <collision>meshes/suction_cup/epick_suction_head.stl 1</collision>
+      </geom>
+      <offsetfrom>suction_cup_holder</offsetfrom>
+      <translation>0 0.0273 0 </translation>
+    </body>
+    <joint name="joint_suction_head" type="hinge" enable="false">
+      <body>suction_cup_holder</body>
+      <body>suction_head</body>
+      <limits>0 0</limits>
+    </joint>
+  </Kinbody>
+
+  <!-- Define the manipulator -->
+  <Manipulator name="denso_suction_cup">
+    <base>link0</base>
+    <effector>suction_head</effector>
+    <rotationaxis>1 0 0 -90</rotationaxis>
+    <translation>0 0.015 0</translation>
+    <rotationaxis>0 1 0 90</rotationaxis>
+  </Manipulator>
+
+</Robot>

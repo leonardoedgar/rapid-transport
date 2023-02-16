@@ -7,7 +7,7 @@ import openravepy as orpy
 from datetime import datetime
 
 from .profile_loading import Database
-from .poly_contact import ConvexHull
+from .poly_contact.hull import ConvexHull
 
 from . import utils
 from . import poly_contact

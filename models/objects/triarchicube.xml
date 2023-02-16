@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Kinbody name="triarchicube">
+ <Body name="Body1" type="dynamic">
+   <Mass type="mimicgeom">
+     <density>1000</density>
+   </Mass>
+   <Geom type="box">
+     <Extents>80e-3 120e-3 17.7e-3</Extents>
+     <diffuseColor>0.8 0.8 0.8</diffuseColor>
+   </Geom>
+ </Body>
+</Kinbody>

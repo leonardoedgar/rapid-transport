@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Kinbody name="ntu30">
+ <Body name="Body1" type="dynamic">
+   <Mass type="mimicgeom">
+     <density>1000</density>
+   </Mass>
+   <Geom type="box">
+     <Extents>8.8e-2 12.55e-2 6.18e-3</Extents>
+     <diffuseColor>1.0 0.99 0.81</diffuseColor>
+   </Geom>
+ </Body>
+</Kinbody>

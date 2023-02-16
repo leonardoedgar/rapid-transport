@@ -13,14 +13,14 @@ transport.utils.setup_logging("DEBUG")
 ROBOT_MODEL_DIR = os.path.abspath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)),
                  os.path.pardir,
-                 "models/caged_denso_ft_sensor_suction.env.xml"))
+                 "models/criticality_check.env.xml"))
 logger.info("Looking for robot model at \n {:}".format(ROBOT_MODEL_DIR))
 CONTACT_OUTPUT_ID = "analytical_rigid" + "1234"
 
 # Parameters of the contact model
-PA = 22.0  # (Newton) suction force
-mu = 0.3  # coeff of friction
-r = 12.5e-3  # radius of the cup
+PA = 13  # (Newton) suction force
+mu = 0.5  # coeff of friction
+r = 20e-3  # radius of the cup
 N = 6  # Number of points
 nvars = 3 * N + 3  # 3 comps for each contactforce and 3 for suction force
 alphas = [2 * np.pi * i / N for i in range(N)]  # angle of the contact points
@@ -99,12 +99,17 @@ def main(simplify=False):
         env = orpy.Environment()
         env.Load(ROBOT_MODEL_DIR)
         robot = env.GetRobots()[0]
-        contact_base = transport.Contact(robot, "denso_suction_cup2",
+        contact_base = transport.Contact(robot, "denso_suction_cup",
                                          np.eye(4), None, None, raw_data=w0_extreme_pts)
         solid_object = transport.SolidObject.init_from_dict(robot, {
-            'object_profile': "bluenb",
-            'object_attach_to': "denso_suction_cup2",
-            "T_link_object": [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 12.5e-3], [0, 0, 0, 1]],
+            # 'object_profile': "industry_book",
+            # "object_profile": "franka_box",
+            "object_profile": "chainflex",
+            'object_attach_to': "denso_suction_cup",
+            # "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 6.18e-3 + 0.003], [0, 0, 0, 1]], # ntu30
+            # "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 17.7e-3 + 0.003], [0, 0, 0, 1]], # triarchicube
+            # "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 50.5e-3 + 0.003], [0, 0, 0, 1]], # franka_box
+            "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 1.35e-2 + 0.003], [0, 0, 0, 1]], # chainflex
             "name": "obj"})
         cs = transport.ContactSimplifier(robot, contact_base, solid_object, N_vertices=60)
         contact_simp, w0_hull = cs.simplify()
@@ -121,7 +126,7 @@ def main(simplify=False):
     A, b = w0_hull.get_halfspaces()
     contact_profile = {CONTACT_OUTPUT_ID: {
         "id": CONTACT_OUTPUT_ID,
-        "attached_to_manipulator": "denso_suction_cup2",
+        "attached_to_manipulator": "denso_suction_cup",
         "orientation": [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
         "position": [0, 0, 0],
         "constraint_coeffs_file": CONTACT_OUTPUT_ID + ".npz",
