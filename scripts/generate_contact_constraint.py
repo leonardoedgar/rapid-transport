@@ -19,7 +19,7 @@ CONTACT_OUTPUT_ID = "analytical_rigid" + "1234"
 
 # Parameters of the contact model
 PA = 13  # (Newton) suction force
-mu = 0.5  # coeff of friction
+mu = 0.6  # coeff of friction
 r = 20e-3  # radius of the cup
 N = 6  # Number of points
 nvars = 3 * N + 3  # 3 comps for each contactforce and 3 for suction force
@@ -104,9 +104,10 @@ def main(simplify=False):
         solid_object = transport.SolidObject.init_from_dict(robot, {
             # 'object_profile': "industry_book",
             # "object_profile": "franka_box",
-            "object_profile": "chainflex",
+            # "object_profile": "chainflex",
+            "object_profile": "ntu30",
             'object_attach_to': "denso_suction_cup",
-            # "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 6.18e-3 + 0.003], [0, 0, 0, 1]], # ntu30
+            "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 6.18e-3 + 0.003], [0, 0, 0, 1]], # ntu30
             # "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 17.7e-3 + 0.003], [0, 0, 0, 1]], # triarchicube
             # "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 50.5e-3 + 0.003], [0, 0, 0, 1]], # franka_box
             "T_link_object": [[0, -1, 0, 0], [-1, 0, 0, 0], [0, 0, -1, 1.35e-2 + 0.003], [0, 0, 0, 1]], # chainflex
